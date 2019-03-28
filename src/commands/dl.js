@@ -1,20 +1,89 @@
-const {Command, flags} = require('@oclif/command')
+const fetch = require('node-fetch')
+const Bluebird = require('bluebird')
+fetch.Promise = Bluebird
+const chalk = require('chalk')
+const { JSDOM } = require('jsdom')
+const fs = require('fs')
+const { Command, flags } = require('@oclif/command')
 
 class DlCommand extends Command {
-  async run() {
-    const {flags} = this.parse(DlCommand)
-    const name = flags.name || 'world'
-    this.log(`hello ${name} from /Users/fms_eraser/Github/ForCoder/src/commands/dl.js`)
+  async run () {
+    const { args } = this.parse(DlCommand)
+
+    const { contest } = args
+    if (!contest) {
+      console.log(chalk.red('Error: Required contest name'))
+      console.log('USAGE: coder contest [contest name]')
+      return
+    }
+
+    await fs.mkdirSync(contest)
+
+    fetch(`https://atcoder.jp/contests/${contest}/tasks?lang=ja`)
+      .then(response => response.text())
+      .then(html => new JSDOM(html).window.document.body)
+      .then(body => body.querySelectorAll('table.table tbody tr td.text-center.no-break a'))
+      .then(Array.from)
+      .then(elements => elements.filter(element => element.innerHTML !== '提出'))
+      .then(elements => elements.map(({ innerHTML, href }) => ({ href, task: innerHTML })))
+      .then(problems => Promise.all(problems.map(problem => this.downloadProblem(contest, problem))))
+  }
+
+  downloadProblem (contest, problem) {
+    return new Promise(
+      (resolve, reject) => {
+        this.mkdir(`${contest}/${problem.task}`)
+          .then(async _ => fetch(`https://atcoder.jp${problem.href}`))
+          .then(response => response.text())
+          .then(html => new JSDOM(html).window.document.body)
+          .then(body => body.querySelectorAll('div#task-statement span.lang>span.lang-ja div.part>section>pre'))
+          .then(Array.from)
+          .then(elements => elements.filter(element => !element.innerHTML.includes('<var>')))
+          .then(elements => elements.map(element => element.innerHTML))
+          .then(examples => Promise.all(examples.map((example, index) => this.writeExample(contest, problem.task, example, index))))
+          .then(() => console.log(`✅ Download Complete: https://atcoder.jp${problem.href}`))
+          .then(resolve)
+          .catch(reject)
+      }
+    )
+  }
+
+  writeExample (contest, task, example, index) {
+    return new Promise(
+      (resolve, reject) => {
+        this.writeFile(`${contest}/${task}/${index % 2 === 0 ? 'in' : 'out'}${Math.floor(index * 0.5) + 1}.txt`, example)
+          .then(resolve)
+          .catch(reject)
+      }
+    )
+  }
+
+  mkdir (path) {
+    return new Promise(
+      (resolve, reject) => {
+        fs.mkdir(path, { recursive: true }, resolve)
+      }
+    )
+  }
+
+  writeFile (path, data) {
+    return new Promise(
+      (resolve, reject) => {
+        fs.writeFile(path, data, {}, resolve)
+      }
+    )
   }
 }
 
-DlCommand.description = `Describe the command here
-...
-Extra documentation goes here
-`
+DlCommand.description = 'download test files from AtCoder Contest'
 
 DlCommand.flags = {
-  name: flags.string({char: 'n', description: 'name to print'}),
+  help: flags.help({
+    char: 'h',
+    description: 'show help of `coder dl`'
+  })
 }
+
+DlCommand.args = [{ name: 'contest' }]
 
 module.exports = DlCommand
