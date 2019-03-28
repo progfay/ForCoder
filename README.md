@@ -28,8 +28,28 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
+* [`coder dl`](#coder-dl)
 * [`coder hello`](#coder-hello)
 * [`coder help [COMMAND]`](#coder-help-command)
+* [`coder test`](#coder-test)
+
+## `coder dl`
+
+Describe the command here
+
+```
+USAGE
+  $ coder dl
+
+OPTIONS
+  -n, --name=name  name to print
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/dl.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/dl.js)_
 
 ## `coder hello`
 
@@ -65,4 +85,22 @@ OPTIONS
 ```
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6/src/commands/help.ts)_
+
+## `coder test`
+
+Describe the command here
+
+```
+USAGE
+  $ coder test
+
+OPTIONS
+  -n, --name=name  name to print
+
+DESCRIPTION
+  ...
+  Extra documentation goes here
+```
+
+_See code: [src/commands/test.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/test.js)_
 <!-- commandsstop -->
