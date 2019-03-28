@@ -28,28 +28,26 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`coder hello [FILE]`](#coder-hello-file)
+* [`coder hello`](#coder-hello)
 * [`coder help [COMMAND]`](#coder-help-command)
 
-## `coder hello [FILE]`
+## `coder hello`
 
-describe the command here
+Describe the command here
 
 ```
 USAGE
-  $ coder hello [FILE]
+  $ coder hello
 
 OPTIONS
-  -f, --force
-  -h, --help       show CLI help
   -n, --name=name  name to print
 
-EXAMPLE
-  $ coder hello
-  hello world from ./src/hello.ts!
+DESCRIPTION
+  ...
+  Extra documentation goes here
 ```
 
-_See code: [src/commands/hello.ts](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/hello.ts)_
+_See code: [src/commands/hello.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/hello.js)_
 
 ## `coder help [COMMAND]`
 
