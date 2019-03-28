@@ -28,46 +28,23 @@ USAGE
 <!-- usagestop -->
 # Commands
 <!-- commands -->
-* [`coder dl`](#coder-dl)
-* [`coder hello`](#coder-hello)
+* [`coder dl [CONTEST]`](#coder-dl-contest)
 * [`coder help [COMMAND]`](#coder-help-command)
 * [`coder test`](#coder-test)
 
-## `coder dl`
+## `coder dl [CONTEST]`
 
-Describe the command here
+download test files from AtCoder Contest
 
 ```
 USAGE
-  $ coder dl
+  $ coder dl [CONTEST]
 
 OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
+  -h, --help  show help of `coder dl`
 ```
 
 _See code: [src/commands/dl.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/dl.js)_
-
-## `coder hello`
-
-Describe the command here
-
-```
-USAGE
-  $ coder hello
-
-OPTIONS
-  -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
-```
-
-_See code: [src/commands/hello.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/hello.js)_
 
 ## `coder help [COMMAND]`
 
