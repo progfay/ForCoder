@@ -17,6 +17,8 @@ class DlCommand extends Command {
       return
     }
 
+    this.mkdir(`${contest}/.page`)
+
     fetch(`https://atcoder.jp/contests/${contest}/tasks?lang=ja`)
       .then(response => response.text())
       .then(html => new JSDOM(html).window.document.body)
@@ -33,6 +35,7 @@ class DlCommand extends Command {
         this.mkdir(`${contest}/.test/${problem.task}`)
           .then(async _ => fetch(`https://atcoder.jp${problem.href}`))
           .then(response => response.text())
+          .then(html => this.writeFile(`${contest}/.page/${problem.task}.html`, html))
           .then(html => new JSDOM(html).window.document.body)
           .then(body => body.querySelectorAll('div#task-statement span.lang>span.lang-ja div.part>section>pre'))
           .then(Array.from)
