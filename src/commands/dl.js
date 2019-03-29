@@ -38,18 +38,10 @@ class DlCommand extends Command {
           .then(Array.from)
           .then(elements => elements.filter(element => !element.innerHTML.includes('<var>')))
           .then(elements => elements.map(element => element.innerHTML))
-          .then(examples => Promise.all(examples.map((example, index) => this.writeExample(contest, problem.task, example, index))))
+          .then(examples => Promise.all(examples.map((example, index) => (
+            this.writeFile(`${contest}/.test/${problem.task}/${Math.floor(index * 0.5) + 1}.${index % 2 === 0 ? 'in' : 'out'}`, example)
+          ))))
           .then(() => console.log(`✅ Download Complete: https://atcoder.jp${problem.href}`))
-          .then(resolve)
-          .catch(reject)
-      }
-    )
-  }
-
-  writeExample (contest, task, example, index) {
-    return new Promise(
-      (resolve, reject) => {
-        this.writeFile(`${contest}/.test/${task}/${Math.floor(index * 0.5) + 1}.${index % 2 === 0 ? 'in' : 'out'}`, example)
           .then(resolve)
           .catch(reject)
       }
@@ -68,7 +60,7 @@ class DlCommand extends Command {
   writeFile (path, data) {
     return new Promise(
       (resolve, reject) => {
-        fs.writeFile(path, data, {}, resolve)
+        fs.writeFile(path, data, {}, () => resolve(data))
       }
     )
   }
