@@ -17,8 +17,6 @@ class DlCommand extends Command {
       return
     }
 
-    await this.mkdir(contest)
-
     fetch(`https://atcoder.jp/contests/${contest}/tasks?lang=ja`)
       .then(response => response.text())
       .then(html => new JSDOM(html).window.document.body)
@@ -32,7 +30,7 @@ class DlCommand extends Command {
   downloadProblem (contest, problem) {
     return new Promise(
       (resolve, reject) => {
-        this.mkdir(`${contest}/${problem.task}`)
+        this.mkdir(`${contest}/.test/${problem.task}`)
           .then(async _ => fetch(`https://atcoder.jp${problem.href}`))
           .then(response => response.text())
           .then(html => new JSDOM(html).window.document.body)
@@ -51,7 +49,7 @@ class DlCommand extends Command {
   writeExample (contest, task, example, index) {
     return new Promise(
       (resolve, reject) => {
-        this.writeFile(`${contest}/${task}/${index % 2 === 0 ? 'in' : 'out'}${Math.floor(index * 0.5) + 1}.txt`, example)
+        this.writeFile(`${contest}/.test/${task}/${Math.floor(index * 0.5) + 1}.${index % 2 === 0 ? 'in' : 'out'}`, example)
           .then(resolve)
           .catch(reject)
       }
