@@ -13,7 +13,7 @@ class DlCommand extends Command {
     const { contest } = args
     if (!contest) {
       console.log(chalk.red('Error: Required contest name'))
-      console.log('USAGE: coder contest [contest name]')
+      console.log('USAGE: coder dl [CONTEST]')
       return
     }
 
