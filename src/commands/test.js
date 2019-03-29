@@ -1,3 +1,4 @@
+const { execSync } = require('child_process')
 const fs = require('fs')
 const { Command, flags } = require('@oclif/command')
 const chalk = require('chalk')
@@ -13,7 +14,19 @@ class TestCommand extends Command {
       return
     }
 
-    console.log((await this.readdir(`.test/${task}`)).filter(file => file.match(/^\d+\.((in)|(out))$/)))
+    const files = await this.readdir(`.test/${task}`)
+    const tests = await files
+      .map(file => file.match(/^(.+)\.in$/))
+      .filter(Boolean)
+      .map(match => match[1])
+      .filter(file => files.includes(`${file}.out`))
+      .map(file => `.test/${task}/${file}`)
+
+    console.log(tests)
+
+    for (const test of tests) {
+      console.log(execSync(`cat ${test}.in | python3 ${task}.py`).toString())
+    }
   }
 
   readdir (path) {
