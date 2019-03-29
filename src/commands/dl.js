@@ -17,7 +17,7 @@ class DlCommand extends Command {
       return
     }
 
-    await fs.mkdirSync(contest)
+    await this.mkdir(contest)
 
     fetch(`https://atcoder.jp/contests/${contest}/tasks?lang=ja`)
       .then(response => response.text())
@@ -60,7 +60,8 @@ class DlCommand extends Command {
 
   mkdir (path) {
     return new Promise(
-      (resolve, reject) => {
+      async (resolve, reject) => {
+        if (await fs.existsSync(path)) return resolve()
         fs.mkdir(path, { recursive: true }, resolve)
       }
     )
