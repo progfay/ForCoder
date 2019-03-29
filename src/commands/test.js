@@ -1,20 +1,42 @@
-const {Command, flags} = require('@oclif/command')
+const fs = require('fs')
+const { Command, flags } = require('@oclif/command')
+const chalk = require('chalk')
 
 class TestCommand extends Command {
-  async run() {
-    const {flags} = this.parse(TestCommand)
-    const name = flags.name || 'world'
-    this.log(`hello ${name} from /Users/fms_eraser/Github/ForCoder/src/commands/test.js`)
+  async run () {
+    const { args } = this.parse(TestCommand)
+
+    const { task } = args
+    if (!task) {
+      console.log(chalk.red('Error: Required task name'))
+      console.log('USAGE: coder test [TASK]')
+      return
+    }
+
+    console.log((await this.readdir(`.test/${task}`)).filter(file => file.match(/^\d+\.((in)|(out))$/)))
+  }
+
+  readdir (path) {
+    return new Promise(
+      (resolve, reject) => {
+        fs.readdir(path, (error, files) => {
+          if (error) return reject(error)
+          return resolve(files.filter(file => fs.statSync(`${path}/${file}`).isFile()))
+        })
+      }
+    )
   }
 }
 
-TestCommand.description = `Describe the command here
-...
-Extra documentation goes here
-`
+TestCommand.description = 'check the task submission is pass the tests'
 
 TestCommand.flags = {
-  name: flags.string({char: 'n', description: 'name to print'}),
+  help: flags.help({
+    char: 'h',
+    description: 'show help of `coder test`'
+  })
 }
+
+TestCommand.args = [{ name: 'task' }]
 
 module.exports = TestCommand
