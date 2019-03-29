@@ -6,6 +6,17 @@ const { JSDOM } = require('jsdom')
 const fs = require('fs')
 const { Command, flags } = require('@oclif/command')
 
+const PYTHON_TEMPLATE_FILE = `
+def solve():
+  N = int(input())
+  N, M, O = map(int, input().split())
+  one_line_arr = [int(i) for i in input().split()]
+  multi_line_arr = [int(input()) for i in range(N)]
+  return 'ans'
+
+print(solve())
+`.trim()
+
 class DlCommand extends Command {
   async run () {
     const { args } = this.parse(DlCommand)
@@ -26,7 +37,20 @@ class DlCommand extends Command {
       .then(Array.from)
       .then(elements => elements.filter(element => element.innerHTML !== '提出'))
       .then(elements => elements.map(({ innerHTML, href }) => ({ href, task: innerHTML })))
-      .then(problems => Promise.all(problems.map(problem => this.downloadProblem(contest, problem))))
+      .then(problems => Promise.all([
+        ...problems.map(problem => this.generateTemplate(contest, problem)),
+        ...problems.map(problem => this.downloadProblem(contest, problem))
+      ]))
+  }
+
+  generateTemplate (contest, problem) {
+    return new Promise(
+      (resolve, reject) => {
+        this.writeFile(`${contest}/${problem.task}.py`, PYTHON_TEMPLATE_FILE)
+          .then(resolve)
+          .catch(reject)
+      }
+    )
   }
 
   downloadProblem (contest, problem) {
