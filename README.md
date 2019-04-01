@@ -19,7 +19,7 @@ $ npm install -g forcoder
 $ coder COMMAND
 running command...
 $ coder (-v|--version|version)
-forcoder/0.0.0 darwin-x64 node-v11.10.0
+forcoder/1.0.0 darwin-x64 node-v11.10.0
 $ coder --help [COMMAND]
 USAGE
   $ coder COMMAND
@@ -46,7 +46,7 @@ OPTIONS
   -h, --help  show help of `coder dl`
 ```
 
-_See code: [src/commands/dl.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/dl.js)_
+_See code: [src/commands/dl.js](https://github.com/progfay/forcoder/blob/v1.0.0/src/commands/dl.js)_
 
 ## `coder help [COMMAND]`
 
@@ -75,13 +75,9 @@ USAGE
 
 OPTIONS
   -n, --name=name  name to print
-
-DESCRIPTION
-  ...
-  Extra documentation goes here
 ```
 
-_See code: [src/commands/login.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/login.js)_
+_See code: [src/commands/login.js](https://github.com/progfay/forcoder/blob/v1.0.0/src/commands/login.js)_
 
 ## `coder open [TASK]`
 
@@ -92,7 +88,7 @@ USAGE
   $ coder open [TASK]
 ```
 
-_See code: [src/commands/open.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/open.js)_
+_See code: [src/commands/open.js](https://github.com/progfay/forcoder/blob/v1.0.0/src/commands/open.js)_
 
 ## `coder test [TASK]`
 
@@ -106,5 +102,5 @@ OPTIONS
   -h, --help  show help of `coder test`
 ```
 
-_See code: [src/commands/test.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/test.js)_
+_See code: [src/commands/test.js](https://github.com/progfay/forcoder/blob/v1.0.0/src/commands/test.js)_
 <!-- commandsstop -->
