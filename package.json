@@ -11,7 +11,6 @@
     "@oclif/command": "^1.5.12",
     "@oclif/config": "^1.12.11",
     "@oclif/plugin-help": "^2.1.6",
-    "bluebird": "^3.5.3",
     "chalk": "^2.4.2",
     "jsdom": "^14.0.0",
     "log-update": "^3.1.0",

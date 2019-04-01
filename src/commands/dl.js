@@ -1,9 +1,9 @@
 const fetch = require('node-fetch')
-const Bluebird = require('bluebird')
-fetch.Promise = Bluebird
 const chalk = require('chalk')
 const { JSDOM } = require('jsdom')
 const fs = require('fs')
+const path = require('path')
+const os = require('os')
 const { Command, flags } = require('@oclif/command')
 
 const PYTHON_TEMPLATE_FILE = `
@@ -28,9 +28,28 @@ class DlCommand extends Command {
       return
     }
 
+    if (!fs.existsSync(path.resolve(os.homedir(), '.coderinfo.json'))) {
+      console.log(chalk.red('Please login before download Contest data.\nPlease run `coder login` to login AtCoder.'))
+      process.exit(1)
+    }
+    this.REVEL_SESSION = JSON.parse(fs.readFileSync(path.resolve(os.homedir(), '.coderinfo.json')).toString()).REVEL_SESSION
+    if (!this.REVEL_SESSION) {
+      console.log(chalk.red('Please login before download Contest data.\nPlease run `coder login` to login AtCoder.'))
+      process.exit(1)
+    }
+
     this.mkdir(`${contest}/.page`)
 
-    fetch(`https://atcoder.jp/contests/${contest}/tasks?lang=ja`)
+    fetch(`https://atcoder.jp/contests/${contest}/tasks?lang=ja`, { headers: { cookie: `REVEL_SESSION=${this.REVEL_SESSION}` } })
+      .then(async response => {
+        if (!response.ok) {
+          const html = await response.text()
+          const message = new JSDOM(html).window.document.body.querySelector('div.alert-danger').textContent.replace('×', '').trim()
+          console.error(chalk.red(message))
+          process.exit(1)
+        }
+        return response
+      })
       .then(response => response.text())
       .then(html => new JSDOM(html).window.document.body)
       .then(body => body.querySelectorAll('table.table tbody tr td.text-center.no-break a'))
@@ -57,7 +76,7 @@ class DlCommand extends Command {
     return new Promise(
       (resolve, reject) => {
         this.mkdir(`${contest}/.test/${problem.task}`)
-          .then(async _ => fetch(`https://atcoder.jp${problem.href}`))
+          .then(async _ => fetch(`https://atcoder.jp${problem.href}`, { headers: { cookie: `REVEL_SESSION=${this.REVEL_SESSION}` } }))
           .then(response => response.text())
           .then(html => new JSDOM(html).window.document.body.querySelector('div#task-statement span.lang>span.lang-ja').innerHTML)
           .then(html => this.writeFile(`${contest}/.page/${problem.task}.html`, html))
