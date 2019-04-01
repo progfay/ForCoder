@@ -30,7 +30,8 @@ USAGE
 <!-- commands -->
 * [`coder dl [CONTEST]`](#coder-dl-contest)
 * [`coder help [COMMAND]`](#coder-help-command)
-* [`coder test`](#coder-test)
+* [`coder open`](#coder-open)
+* [`coder test [TASK]`](#coder-test-task)
 
 ## `coder dl [CONTEST]`
 
@@ -63,13 +64,13 @@ OPTIONS
 
 _See code: [@oclif/plugin-help](https://github.com/oclif/plugin-help/blob/v2.1.6/src/commands/help.ts)_
 
-## `coder test`
+## `coder open`
 
 Describe the command here
 
 ```
 USAGE
-  $ coder test
+  $ coder open
 
 OPTIONS
   -n, --name=name  name to print
@@ -77,6 +78,20 @@ OPTIONS
 DESCRIPTION
   ...
   Extra documentation goes here
+```
+
+_See code: [src/commands/open.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/open.js)_
+
+## `coder test [TASK]`
+
+check the task submission is pass the tests
+
+```
+USAGE
+  $ coder test [TASK]
+
+OPTIONS
+  -h, --help  show help of `coder test`
 ```
 
 _See code: [src/commands/test.js](https://github.com/progfay/forcoder/blob/v0.0.0/src/commands/test.js)_

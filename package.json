@@ -15,7 +15,8 @@
     "chalk": "^2.4.2",
     "jsdom": "^14.0.0",
     "log-update": "^3.1.0",
-    "node-fetch": "^2.3.0"
+    "node-fetch": "^2.3.0",
+    "open": "^6.0.0"
   },
   "devDependencies": {
     "@oclif/dev-cli": "^1.22.0",
