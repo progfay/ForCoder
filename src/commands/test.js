@@ -62,7 +62,7 @@ class TestCommand extends Command {
         const isCorrect = expected.length > i && received.length > i && expected[i] === received[i]
         const expectedLine = expected.length > i ? expected[i].split(new RegExp(`(.{${outputWidth}})`)).filter(Boolean) : []
         const receivedLine = received.length > i ? received[i].split(new RegExp(`(.{${outputWidth}})`)).filter(Boolean) : []
-        const length = Math.max(expected.length, received.length)
+        const length = Math.max(expectedLine.length, receivedLine.length)
         for (let j = 0; j < length; j++) {
           const _expected = expectedLine.length > j ? expectedLine[j] : ''
           const _received = receivedLine.length > j ? receivedLine[j] : ''
