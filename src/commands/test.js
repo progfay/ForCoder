@@ -60,18 +60,20 @@ class TestCommand extends Command {
       for (let i = 0; i < lineCount; i++) {
         let isFirst = true
         const isCorrect = expected.length > i && received.length > i && expected[i] === received[i]
-        const expectedLine = expected.length > i ? expected[i].split(new RegExp(`(.{${outputWidth}})`)).filter(Boolean) : []
-        const receivedLine = received.length > i ? received[i].split(new RegExp(`(.{${outputWidth}})`)).filter(Boolean) : []
-        const length = Math.max(expectedLine.length, receivedLine.length)
-        for (let j = 0; j < length; j++) {
-          const _expected = expectedLine.length > j ? expectedLine[j] : ''
-          const _received = receivedLine.length > j ? receivedLine[j] : ''
+        let expectedLine = expected.length > i ? expected[i] : ''
+        let receivedLine = received.length > i ? received[i] : ''
+        while (expectedLine.length !== 0 || receivedLine.length !== 0) {
+          const _expected = expectedLine.length > outputWidth ? expectedLine.substring(0, outputWidth) : expectedLine.padEnd(outputWidth)
+          const _received = receivedLine.length > outputWidth ? receivedLine.substring(0, outputWidth) : receivedLine.padEnd(outputWidth)
+          process.stdout.write(` ${chalk.black((isFirst ? i + 1 : '').toString().padStart(lineCountWidth))} ${chalk.black('│')} `)
           if (isCorrect) {
-            console.log(` ${chalk.black((isFirst ? i + 1 : '').toString().padStart(lineCountWidth))} ${chalk.black('│')} ${_expected.padEnd(outputWidth)} ${chalk.black('│')} ${_received.padEnd(outputWidth)}`)
+            process.stdout.write(`${_expected} ${chalk.black('│')} ${_received}\n`)
           } else {
-            console.log(` ${chalk.black((isFirst ? i + 1 : '').toString().padStart(lineCountWidth))} ${chalk.black('│')} ${chalk.green(_expected.padEnd(outputWidth))} ${chalk.black('│')} ${chalk.red(_received.padEnd(outputWidth))}`)
+            process.stdout.write(`${chalk.green(_expected)} ${chalk.black('│')} ${chalk.red(_received)}\n`)
           }
           isFirst = false
+          expectedLine = expectedLine.substring(outputWidth)
+          receivedLine = receivedLine.substring(outputWidth)
         }
       }
       console.log(chalk.black(`─${'─'.repeat(lineCountWidth)}─┴─${'─'.repeat(outputWidth)}─┴─${'─'.repeat(outputWidth)}`))
