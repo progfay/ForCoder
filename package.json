@@ -1,7 +1,7 @@
 {
   "name": "forcoder",
   "description": "CLI for download and run test code of AtCoder Contest",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "progfay @progfay",
   "bin": {
     "coder": "./bin/run"
