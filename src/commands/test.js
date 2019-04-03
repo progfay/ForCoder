@@ -42,7 +42,6 @@ class TestCommand extends Command {
 
       if (expected.toString() === received.toString()) {
         logUpdate(`${chalk.black.bgGreenBright.bold(' PASS ')} ${test}.in`)
-        console.log()
         continue
       }
 
