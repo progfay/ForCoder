@@ -50,12 +50,12 @@ class TestCommand extends Command {
 
       const { columns } = process.stdout
       const lineCount = Math.max(expected.length, received.length)
-      const lineCountWidth = lineCount.toString().length + ((columns - 1) % 2) + 1
-      const outputWidth = (columns - lineCountWidth - 7) / 2
+      const lineCountWidth = lineCount.toString().length + ((columns) % 2) + 1
+      const outputWidth = (columns - lineCountWidth - 8) / 2
 
-      console.log(chalk.black(`─${'─'.repeat(lineCountWidth)}─┬─${'─'.repeat(outputWidth)}─┬─${'─'.repeat(outputWidth)}`))
-      console.log(chalk.black(` ${' '.repeat(lineCountWidth)} │ ${chalk.white.bold(padding('Expected', outputWidth))} │ ${chalk.white.bold(padding('Received', outputWidth))}`))
-      console.log(chalk.black(`─${'─'.repeat(lineCountWidth)}─┼─${'─'.repeat(outputWidth)}─┼─${'─'.repeat(outputWidth)}`))
+      console.log(chalk.black(`┌${'─'.repeat(lineCountWidth)}─┬─${'─'.repeat(outputWidth)}─┬─${'─'.repeat(outputWidth)}┐`))
+      console.log(chalk.black(`│${' '.repeat(lineCountWidth)} │ ${chalk.white.bold(padding('Expected', outputWidth))} │ ${chalk.white.bold(padding('Received', outputWidth))}│`))
+      console.log(chalk.black(`├${'─'.repeat(lineCountWidth)}─┼─${'─'.repeat(outputWidth)}─┼─${'─'.repeat(outputWidth)}┤`))
 
       for (let i = 0; i < lineCount; i++) {
         let isFirst = true
@@ -65,18 +65,18 @@ class TestCommand extends Command {
         while (expectedLine.length !== 0 || receivedLine.length !== 0) {
           const _expected = expectedLine.length > outputWidth ? expectedLine.substring(0, outputWidth) : expectedLine.padEnd(outputWidth)
           const _received = receivedLine.length > outputWidth ? receivedLine.substring(0, outputWidth) : receivedLine.padEnd(outputWidth)
-          process.stdout.write(` ${chalk.black((isFirst ? i + 1 : '').toString().padStart(lineCountWidth))} ${chalk.black('│')} `)
+          process.stdout.write(`${chalk.black('│' + (isFirst ? i + 1 : '').toString().padStart(lineCountWidth))} ${chalk.black('│')} `)
           if (isCorrect) {
-            process.stdout.write(`${_expected} ${chalk.black('│')} ${_received}\n`)
+            process.stdout.write(`${_expected} ${chalk.black('│')} ${_received}${chalk.black('│')}\n`)
           } else {
-            process.stdout.write(`${chalk.green(_expected)} ${chalk.black('│')} ${chalk.red(_received)}\n`)
+            process.stdout.write(`${chalk.green(_expected)} ${chalk.black('│')} ${chalk.red(_received)}${chalk.black('│')}\n`)
           }
           isFirst = false
           expectedLine = expectedLine.substring(outputWidth)
           receivedLine = receivedLine.substring(outputWidth)
         }
       }
-      console.log(chalk.black(`─${'─'.repeat(lineCountWidth)}─┴─${'─'.repeat(outputWidth)}─┴─${'─'.repeat(outputWidth)}`))
+      console.log(chalk.black(`└${'─'.repeat(lineCountWidth)}─┴─${'─'.repeat(outputWidth)}─┴─${'─'.repeat(outputWidth)}┘`))
       console.log()
     }
   }
